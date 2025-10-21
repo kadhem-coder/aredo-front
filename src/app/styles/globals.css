@@ -1,0 +1,358 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+:root {
+  --radius: 0.75rem;
+  
+  /* خلفية فاتحة أنيقة - تدرج ناعم من الأبيض إلى الرمادي الفاتح */
+  --background: linear-gradient(135deg, #ffffff 0%, #f8fafc 50%, #f1f5f9 100%);
+  --background-solid: #ffffff;
+  --foreground: #1e293b; /* رمادي داكن ناعم للنص */
+  
+  /* الكروت والعناصر - أبيض نقي مع ظل خفيف */
+  --card: rgba(255, 255, 255, 0.95);
+  --card-foreground: #334155;
+  --popover: #ffffff;
+  --popover-foreground: #1e293b;
+  
+  /* الألوان الأساسية - تدرج أزرق-تركوازي أنيق */
+  --primary: linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%);
+  --primary-solid: #0ea5e9;
+  --primary-foreground: #ffffff;
+  
+  /* الألوان الثانوية - رمادي فاتح دافئ */
+  --secondary: #f8fafc;
+  --secondary-foreground: #475569;
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+  --accent: #e0f2fe;
+  --accent-foreground: #0c4a6e;
+  
+  /* الألوان التفاعلية */
+  --destructive: #ef4444;
+  --border: #e2e8f0;
+  --input: #f8fafc;
+  --ring: #0ea5e9;
+  
+  /* ألوان المخططات - متناسقة ومريحة للعين */
+  --chart-1: #0ea5e9; /* أزرق سماوي */
+  --chart-2: #8b5cf6; /* بنفسجي */
+  --chart-3: #06b6d4; /* تركوازي */
+  --chart-4: #10b981; /* أخضر زمردي */
+  --chart-5: #f59e0b; /* برتقالي ذهبي */
+  
+  /* الشريط الجانبي */
+  --sidebar: rgba(248, 250, 252, 0.95);
+  --sidebar-foreground: #475569;
+  --sidebar-primary: #0ea5e9;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #e0f2fe;
+  --sidebar-accent-foreground: #0c4a6e;
+  --sidebar-border: #e2e8f0;
+  --sidebar-ring: #0ea5e9;
+}
+
+.dark {
+  /* خلفية مظلمة أنيقة - تدرج من الأسود إلى الرمادي الداكن */
+  --background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+  --background-solid: #0f172a;
+  --foreground: #f8fafc;
+  
+  /* الكروت في الوضع المظلم */
+  --card: rgba(30, 41, 59, 0.95);
+  --card-foreground: #f1f5f9;
+  --popover: #1e293b;
+  --popover-foreground: #f8fafc;
+  
+  /* الألوان الأساسية في الوضع المظلم - أزرق فاتح مع توهج */
+  --primary: linear-gradient(135deg, #38bdf8 0%, #22d3ee 100%);
+  --primary-solid: #38bdf8;
+  --primary-foreground: #0c4a6e;
+  
+  --secondary: #334155;
+  --secondary-foreground: #cbd5e1;
+  --muted: #475569;
+  --muted-foreground: #94a3b8;
+  --accent: #1e40af;
+  --accent-foreground: #dbeafe;
+  
+  --destructive: #f87171;
+  --border: rgba(148, 163, 184, 0.2);
+  --input: rgba(248, 250, 252, 0.1);
+  --ring: #38bdf8;
+  
+  /* ألوان المخططات للوضع المظلم - أكثر إشراقاً */
+  --chart-1: #38bdf8;
+  --chart-2: #a78bfa;
+  --chart-3: #22d3ee;
+  --chart-4: #34d399;
+  --chart-5: #fbbf24;
+  
+  --sidebar: rgba(30, 41, 59, 0.95);
+  --sidebar-foreground: #cbd5e1;
+  --sidebar-primary: #38bdf8;
+  --sidebar-primary-foreground: #0c4a6e;
+  --sidebar-accent: #1e40af;
+  --sidebar-accent-foreground: #dbeafe;
+  --sidebar-border: rgba(148, 163, 184, 0.2);
+  --sidebar-ring: #38bdf8;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  
+  body {
+    @apply text-foreground;
+    background: var(--background-solid);
+    background-image: var(--background);
+    min-height: 100vh;
+    font-family: var(--font-sans);
+  }
+  
+  /* تخصيص الأزرار بتأثيرات جميلة */
+  .btn-primary, 
+  button[class*="bg-gradient"] {
+    background: var(--primary);
+    background-image: var(--primary);
+    @apply text-primary-foreground shadow-lg border-0 rounded-xl;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .btn-primary:hover {
+    background: linear-gradient(135deg, #0284c7 0%, #0891b2 100%);
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 10px 25px rgba(14, 165, 233, 0.25);
+  }
+  
+  /* تحسين الكروت بظلال ناعمة */
+  .card {
+    @apply text-card-foreground backdrop-blur-sm border border-border/50 rounded-2xl;
+    background: var(--card);
+    box-shadow: 
+      0 1px 3px rgba(0, 0, 0, 0.05),
+      0 10px 25px rgba(0, 0, 0, 0.08),
+      0 20px 40px rgba(0, 0, 0, 0.03);
+    transition: all 0.3s ease;
+  }
+  
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 
+      0 5px 15px rgba(0, 0, 0, 0.1),
+      0 15px 35px rgba(0, 0, 0, 0.1),
+      0 25px 50px rgba(0, 0, 0, 0.05);
+  }
+  
+  /* تحسين عناصر الإدخال */
+  input[type="text"], 
+  input[type="password"], 
+  input[type="tel"], 
+  input[type="email"],
+  textarea,
+  select {
+    @apply border-border/60 focus:ring-2 transition-all duration-300 rounded-xl;
+    background: var(--input);
+    backdrop-filter: blur(10px);
+  }
+  
+  input:focus,
+  textarea:focus,
+  select:focus {
+    border-color: var(--primary-solid);
+    box-shadow: 
+      0 0 0 3px rgba(14, 165, 233, 0.1),
+      0 2px 8px rgba(14, 165, 233, 0.15);
+    transform: scale(1.02);
+  }
+  
+  /* تحسين الروابط */
+  a {
+    @apply transition-all duration-300;
+    position: relative;
+  }
+  
+  a:hover {
+    color: var(--primary-solid);
+    transform: translateY(-1px);
+  }
+  
+  /* تحسين القوائم */
+  ul, ol {
+    @apply space-y-2;
+  }
+  
+  li {
+    @apply transition-colors duration-200;
+  }
+  
+  /* تحسين العناوين */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold tracking-tight;
+    background: var(--primary);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+}
+
+/* كلاسات مساعدة للتدرجات والتأثيرات */
+.gradient-bg {
+  background: var(--background);
+}
+
+.gradient-primary {
+  background: var(--primary);
+}
+
+.text-gradient {
+  background: var(--primary);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.glass-effect {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.glow-effect {
+  box-shadow: 0 0 20px rgba(14, 165, 233, 0.3);
+}
+
+/* تأثيرات الحركة المحسنة */
+@keyframes float {
+  0%, 100% { 
+    transform: translateY(0px) rotate(0deg); 
+  }
+  50% { 
+    transform: translateY(-10px) rotate(1deg); 
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(14, 165, 233, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(14, 165, 233, 0.5);
+  }
+}
+
+.float-animation {
+  animation: float 4s ease-in-out infinite;
+}
+
+.pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+/* تأثير التموج عند النقر */
+.ripple-effect {
+  position: relative;
+  overflow: hidden;
+}
+
+.ripple-effect::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  background-image: radial-gradient(circle, rgba(14, 165, 233, 0.3) 10%, transparent 10.01%);
+  background-repeat: no-repeat;
+  background-position: 50%;
+  transform: scale(10, 10);
+  opacity: 0;
+  transition: transform 0.5s, opacity 1s;
+}
+
+.ripple-effect:active::after {
+  transform: scale(0, 0);
+  opacity: 0.3;
+  transition: 0s;
+}
+
+/* تحسينات للشاشات الصغيرة */
+@media (max-width: 768px) {
+  :root {
+    --radius: 0.5rem;
+  }
+  
+  body {
+    background-attachment: scroll;
+  }
+  
+  .card {
+    margin: 0.75rem;
+    border-radius: 1rem;
+  }
+  
+  .btn-primary:hover {
+    transform: none;
+  }
+  
+  input:focus,
+  textarea:focus,
+  select:focus {
+    transform: none;
+  }
+}
+
+/* تحسينات للشاشات الكبيرة */
+@media (min-width: 1440px) {
+  .card {
+    border-radius: 1.5rem;
+  }
+  
+  .gradient-bg {
+    background-attachment: fixed;
+  }
+}
