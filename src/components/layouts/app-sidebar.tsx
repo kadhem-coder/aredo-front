@@ -68,7 +68,7 @@ const AppSidebar = ({ isOpen, onToggle }: SidebarProps) => {
       href: "/universities",
       children: [
         { title: "قائمة الجامعات", href: "/dashboard/universities" },
-        { title: "إضافة جامعة", href: "/universities/createOrUpdate" },
+        { title: "إضافة جامعة", href: "/dashboard/universities/createOrUpdate" },
       ],
     },
     {
@@ -83,17 +83,17 @@ const AppSidebar = ({ isOpen, onToggle }: SidebarProps) => {
         { title: "إضافة تصنيف", href: "/dashboard/newstypes/createOrUpdate" },
       ],
     },
-    {
-      id: "settings",
-      title: "الإعدادات",
-      icon: Settings,
-      href: "/settings",
-      children: [
-        { title: "الإعدادات العامة", href: "/settings/general" },
-        { title: "إعدادات الحساب", href: "/settings/account" },
-        { title: "الأمان والخصوصية", href: "/settings/security" },
-      ],
-    },
+    // {
+    //   id: "settings",
+    //   title: "الإعدادات",
+    //   icon: Settings,
+    //   href: "/settings",
+    //   children: [
+    //     { title: "الإعدادات العامة", href: "/settings/general" },
+    //     { title: "إعدادات الحساب", href: "/settings/account" },
+    //     { title: "الأمان والخصوصية", href: "/settings/security" },
+    //   ],
+    // },
   ];
 
   const toggleSection = (sectionId: string) => {
