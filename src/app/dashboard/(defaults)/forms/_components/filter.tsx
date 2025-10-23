@@ -259,7 +259,7 @@ const FormsFilter = ({ filters, onFiltersChange }: FormsFilterProps) => {
             {/* حالة التسليم */}
             <div>
               <Label htmlFor="submitted" className="mb-2 block text-sm font-medium text-gray-700">
-                حالة التسليم
+                حالة التقديم 
               </Label>
               <Select
                 value={localFilters.submitted?.toString() || "all"}

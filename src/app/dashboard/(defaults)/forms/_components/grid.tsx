@@ -128,12 +128,10 @@ const FormsGrid = ({
                 عرض التفاصيل
               </DropdownMenuItem>
 
-              {form.is_editable && (
                 <DropdownMenuItem onClick={handleEdit}>
                   <Edit className="mr-2 h-4 w-4" />
                   تعديل
                 </DropdownMenuItem>
-              )}
 
               <DropdownMenuSeparator />
               <DropdownMenuItem 

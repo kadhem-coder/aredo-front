@@ -283,6 +283,9 @@ export const FormSections: React.FC<FormSectionsProps> = ({
               formData={formData}
               handleChange={handleChange}
               isLoading={isLoading}
+                  formKind={selectedFormKind}  // إضافة هذا السطر
+    activeFields={categorizedFields.status}  // إضافة هذا السطر
+
             />
           )}
 

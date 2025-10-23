@@ -174,7 +174,7 @@ const FormsList = ({
                             <span className="text-card-foreground">عرض التفاصيل</span>
                           </DropdownMenuItem>
                           
-                          {form.is_editable && (
+                        
                             <DropdownMenuItem 
                               onClick={() => handleEdit(form)}
                               className="hover:bg-accent/30 transition-colors rounded-lg"
@@ -182,7 +182,6 @@ const FormsList = ({
                               <Edit className="mr-2 h-4 w-4 text-primary-solid" />
                               <span className="text-card-foreground">تعديل</span>
                             </DropdownMenuItem>
-                          )}
                           
                           <DropdownMenuSeparator className="bg-border/30" />
                           <DropdownMenuItem 

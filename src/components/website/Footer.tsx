@@ -1,7 +1,14 @@
-import { Globe, University } from "lucide-react";
+import { Globe, University, Phone } from "lucide-react";
 import React from "react";
 
 const FooterWebsite = ({categories , scrollToSection}:{categories:any , scrollToSection:any}) => {
+  
+  const openWhatsApp = (phoneNumber: string) => {
+    // إزالة المسافات وعلامات الزائد من الرقم
+    const cleanedNumber = phoneNumber.replace(/\s+/g, '').replace('+', '');
+    window.open(`https://wa.me/${cleanedNumber}`, '_blank');
+  };
+
   return (
     <footer className="bg-gradient-to-br from-gray-900 to-gray-800 text-white mt-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -37,7 +44,31 @@ const FooterWebsite = ({categories , scrollToSection}:{categories:any , scrollTo
                   الجامعات
                 </button>
               </li>
-           
+            </ul>
+
+            {/* قسم تواصل معنا */}
+            <h4 className="text-lg font-semibold mb-4 mt-6 text-green-400">
+              تواصل معنا
+            </h4>
+            <ul className="space-y-3">
+              <li>
+                <button
+                  onClick={() => openWhatsApp("+9647727617797")}
+                  className="text-gray-300 hover:text-white transition-colors flex items-center gap-2"
+                >
+                  <Phone className="w-4 h-4" />
+                  07727617797
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => openWhatsApp("+9647700699648")}
+                  className="text-gray-300 hover:text-white transition-colors flex items-center gap-2"
+                >
+                  <Phone className="w-4 h-4" />
+                  07700699648
+                </button>
+              </li>
             </ul>
           </div>
 

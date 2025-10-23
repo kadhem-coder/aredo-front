@@ -74,7 +74,7 @@ const UniversityGrid = ({
         return 'from-blue-500 to-indigo-600'
       case 'private':
         return 'from-green-500 to-emerald-600'
-      case 'mixed':
+      case 'community':
         return 'from-purple-500 to-violet-600'
       default:
         return 'from-gray-500 to-slate-600'
@@ -84,11 +84,13 @@ const UniversityGrid = ({
   const getUniversityTypeLabel = (type: string) => {
     switch (type) {
       case 'public':
-        return 'حكومية'
+        return 'ابتعاث'
       case 'private':
-        return 'أهلية'
-      case 'mixed':
-        return 'مختلطة'
+        return 'نفقة خاصة'
+      case 'community':
+        return 'ابتعاث طبية'
+      case 'international':
+        return 'نفقة خاصة طبية'
       default:
         return 'غير محدد'
     }
@@ -100,7 +102,7 @@ const UniversityGrid = ({
         return 'bg-blue-100 text-blue-800 border-blue-200'
       case 'private':
         return 'bg-green-100 text-green-800 border-green-200'
-      case 'mixed':
+      case 'community':
         return 'bg-purple-100 text-purple-800 border-purple-200'
       default:
         return 'bg-gray-100 text-gray-800 border-gray-200'

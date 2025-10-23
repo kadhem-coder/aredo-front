@@ -41,7 +41,7 @@ import { useGetCountriesQuery } from '@/services/country'
 interface FormData {
   name: string
   country: string
-  university_type: "public" | "private" | "mixed"
+  university_type: "public" | "private" | "international" | "community"
   pdf: File | null
 }
 
@@ -49,7 +49,7 @@ interface UniversityResponse {
   id: string | number
   name: string
   country: string
-  university_type: "public" | "private" | "mixed"
+  university_type: "public" | "private" | "international" | "community"
   pdf?: string | null
   created_at?: string
   updated_at?: string
@@ -297,9 +297,10 @@ const CreateOrUpdateUniversity = () => {
 
   const getUniversityTypeLabel = (type: string) => {
     switch (type) {
-      case 'public': return 'حكومية'
-      case 'private': return 'أهلية'
-      case 'mixed': return 'مختلطة'
+      case 'public': return 'ابتعاث'
+      case 'private': return 'نفقة خاصة'
+      case 'international ': return 'ابتعاث طبية'
+      case 'community ': return 'نفقة خاصة طبية'
       default: return 'غير محدد'
     }
   }
@@ -308,7 +309,8 @@ const CreateOrUpdateUniversity = () => {
     switch (type) {
       case 'public': return 'bg-blue-100 text-blue-800 border-blue-200'
       case 'private': return 'bg-green-100 text-green-800 border-green-200'
-      case 'mixed': return 'bg-purple-100 text-purple-800 border-purple-200'
+      case 'international': return 'bg-purple-100 text-purple-800 border-purple-200'
+      case 'community': return 'bg-purple-100 text-purple-800 border-purple-200'
       default: return 'bg-gray-100 text-gray-800 border-gray-200'
     }
   }
@@ -317,7 +319,8 @@ const CreateOrUpdateUniversity = () => {
     switch (type) {
       case 'public': return 'from-blue-500 to-indigo-600'
       case 'private': return 'from-green-500 to-emerald-600'
-      case 'mixed': return 'from-purple-500 to-violet-600'
+      case 'international': return 'from-purple-500 to-violet-600'
+      case 'community': return 'from-purple-500 to-violet-600'
       default: return 'from-gray-500 to-slate-600'
     }
   }
@@ -458,19 +461,25 @@ const CreateOrUpdateUniversity = () => {
                       <SelectItem value="public">
                         <div className="flex items-center gap-2">
                           <Building className="h-4 w-4 text-blue-500" />
-                          <span>حكومية</span>
+                          <span>ابتعاث</span>
                         </div>
                       </SelectItem>
                       <SelectItem value="private">
                         <div className="flex items-center gap-2">
                           <Building className="h-4 w-4 text-green-500" />
-                          <span>أهلية</span>
+                          <span>نفقة خاصة</span>
                         </div>
                       </SelectItem>
-                      <SelectItem value="mixed">
+                      <SelectItem value="international ">
                         <div className="flex items-center gap-2">
                           <Building className="h-4 w-4 text-purple-500" />
-                          <span>مختلطة</span>
+                          <span>ابتعاث طبية</span>
+                        </div>
+                      </SelectItem>
+                      <SelectItem value="community ">
+                        <div className="flex items-center gap-2">
+                          <Building className="h-4 w-4 text-purple-500" />
+                          <span>نفقة خاصة طبية</span>
                         </div>
                       </SelectItem>
                     </SelectContent>

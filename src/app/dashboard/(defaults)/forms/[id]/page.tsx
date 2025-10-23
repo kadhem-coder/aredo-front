@@ -158,13 +158,10 @@ const FormDetailsPage = () => {
 
         {/* Action Buttons */}
         <div className="flex items-center gap-3">
-          {form.is_editable && (
             <Button onClick={handleEdit} variant="outline">
               <Edit className="h-4 w-4 mr-2" />
               تعديل
             </Button>
-          )}
-
           <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
             <AlertDialogTrigger asChild>
               <Button variant="destructive">
@@ -358,7 +355,27 @@ const FormDetailsPage = () => {
           </div>
         </CardContent>
       </Card>
-
+{/* PDF Display Section */}
+{form.pdf && (
+  <Card>
+    <CardHeader>
+      <CardTitle className="flex items-center justify-between">
+        <span>الملف المرفق</span>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => {
+            window.open(form?.pdf ? form?.pdf : "" , '_blank');
+          }}
+        >
+          <FileText className="h-4 w-4 mr-2" />
+          تحميل PDF
+        </Button>
+      </CardTitle>
+    </CardHeader>
+ 
+  </Card>
+)}
       {/* Status Information */}
       <Card className="mb-6">
         <CardHeader>

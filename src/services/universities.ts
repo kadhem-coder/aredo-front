@@ -7,7 +7,7 @@ export interface University {
   id: string;
   name: string;
   country: string;
-  university_type: "public" | "private" | "mixed";
+  university_type: "public" | "private" | "international" | "community";
   pdf?: string | null;
   created_at: string;
   updated_at: string;
@@ -17,14 +17,14 @@ export interface University {
 export interface CreateUniversityRequest {
   name: string;
   country: string;
-  university_type: "public" | "private" | "mixed";
+  university_type: "public" | "private" | "international" | "community";
   pdf?: File | null; // إضافة ملف PDF
 }
 
 export interface UpdateUniversityRequest {
   name?: string;
   country?: string;
-  university_type?: "public" | "private" | "mixed";
+  university_type?: "public" | "private" | "international" | "community";
   pdf?: File | null; // إضافة ملف PDF
 }
 
@@ -32,7 +32,7 @@ export interface GetUniversitiesRequest {
   page?: number;
   page_size?: number;
   country_id?: string;
-  university_type?: "public" | "private" | "mixed";
+  university_type?: "public" | "private" | "international" | "community";
   search?: string;
 }
 

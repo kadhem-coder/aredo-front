@@ -614,62 +614,74 @@ const DynamicApplicationFormPage: React.FC = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!validateForm()) {
-      return;
-    }
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  
+  if (!validateForm()) {
+    return;
+  }
 
-    try {
-      const submitFormData = new FormData();
-      
-      submitFormData.append('kind', formKindId);
-      
-      // إضافة الحقول فقط إذا كانت من الحقول المرئية للمستخدم
-      Object.entries(formData).forEach(([key, value]) => {
-        if (key !== 'kind' && value !== undefined && value !== null && value !== '') {
-          // تأكد من أن الحقل ليس من الحقول الإدارية
-          if (!ADMIN_ONLY_FIELDS.includes(key as any)) {
-            if (value instanceof File) {
-              submitFormData.append(key, value);
-            } else if (typeof value === 'boolean') {
-              submitFormData.append(key, value ? 'true' : 'false');
-            } else {
-              submitFormData.append(key, String(value));
-            }
+  try {
+    const submitFormData = new FormData();
+    
+    submitFormData.append('kind', formKindId);
+    
+    // إضافة الحقول المرئية للمستخدم
+    Object.entries(formData).forEach(([key, value]) => {
+      if (key !== 'kind' && value !== undefined && value !== null && value !== '') {
+        // تأكد من أن الحقل ليس من الحقول الإدارية
+        if (!ADMIN_ONLY_FIELDS.includes(key as any)) {
+          if (value instanceof File) {
+            submitFormData.append(key, value);
+          } else if (typeof value === 'boolean') {
+            submitFormData.append(key, value ? 'true' : 'false');
+          } else {
+            submitFormData.append(key, String(value));
           }
         }
-      });
+      }
+    });
 
-      await createForm(submitFormData as any).unwrap();
-      
-      setSuccess('تم إرسال الاستمارة بنجاح! سيتم مراجعتها والرد عليك قريباً.');
-      
-      const user = session?.user as any;
-      const resetData: FormDataType = { 
-        kind: formKindId 
-      };
-      if (activeFields.includes('full_name')) {
-        resetData.full_name = user?.name || user?.username || '';
-      }
-      if (activeFields.includes('phone')) {
-        resetData.phone = user?.phone_number || '';
-      }
-      setFormData(resetData);
-      
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      
-    } catch (error: any) {
-      console.error('خطأ في إرسال الاستمارة:', error);
-      
-      if (error?.data?.message) {
-        setErrors({ general: error.data.message });
-      } else {
-        setErrors({ general: 'حدث خطأ في إرسال الاستمارة، يرجى المحاولة مرة أخرى' });
-      }
+    // إضافة الحقول الإدارية المطلوبة بقيمة false
+    if (formKind) {
+      ADMIN_ONLY_FIELDS.forEach((field) => {
+        const isRequired = formKind[field];
+        
+        // إذا كان الحقل مطلوباً، أرسله بقيمة false
+        if (isRequired === true) {
+          submitFormData.append(field, 'false');
+        }
+      });
     }
-  };
+
+    await createForm(submitFormData as any).unwrap();
+    
+    setSuccess('تم إرسال الاستمارة بنجاح! سيتم مراجعتها والرد عليك قريباً.');
+    
+    const user = session?.user as any;
+    const resetData: FormDataType = { 
+      kind: formKindId 
+    };
+    if (activeFields.includes('full_name')) {
+      resetData.full_name = user?.name || user?.username || '';
+    }
+    if (activeFields.includes('phone')) {
+      resetData.phone = user?.phone_number || '';
+    }
+    setFormData(resetData);
+    
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    
+  } catch (error: any) {
+    console.error('خطأ في إرسال الاستمارة:', error);
+    
+    if (error?.data?.message) {
+      setErrors({ general: error.data.message });
+    } else {
+      setErrors({ general: 'حدث خطأ في إرسال الاستمارة، يرجى المحاولة مرة أخرى' });
+    }
+  }
+};
 
   const handleInputChange = (field: string, value: any) => {
     setFormData((prev: FormDataType) => ({ ...prev, [field]: value }));

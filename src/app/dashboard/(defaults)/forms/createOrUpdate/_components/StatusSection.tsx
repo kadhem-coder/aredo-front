@@ -12,13 +12,13 @@ import {
   XCircle,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
 
 interface StatusSectionProps {
   formData: any;
   handleChange: (name: string, value: any) => void;
   isLoading: boolean;
+  formKind?: any;
+  activeFields?: string[]; // إضافة activeFields
 }
 
 // تعريف الحالات مع معلوماتها
@@ -93,7 +93,6 @@ const STATUS_FIELDS = [
     checkedBg: "bg-purple-500",
     checkedRing: "ring-purple-500",
   },
-
   {
     id: "approved",
     label: "الموافقة",
@@ -110,12 +109,34 @@ const STATUS_FIELDS = [
   },
 ];
 
+// الحقول الإدارية
+const ADMIN_ONLY_FIELDS = ['touch', 'payoff', 'submitted', 'received', 'accepted', 'approved'];
+
 export const StatusSection: React.FC<StatusSectionProps> = ({
   formData,
   handleChange,
   isLoading,
+  formKind,
+  activeFields = [],
 }) => {
-  const activeCount = STATUS_FIELDS.filter(
+  // فلترة الحقول لإظهار المطلوبة فقط من الحقول الإدارية
+  const requiredFields = STATUS_FIELDS.filter((field) => {
+    // التحقق من أن الحقل من الحقول الإدارية
+    if (!ADMIN_ONLY_FIELDS.includes(field.id)) {
+      return false;
+    }
+    
+    // التحقق من أن الحقل مطلوب في نوع الاستمارة
+    // يمكن أن يكون موجود في activeFields أو formKind[field.id] === true
+    return activeFields.includes(field.id) || (formKind && formKind[field.id] === true);
+  });
+
+  // إذا لم توجد حقول مطلوبة، لا نعرض القسم
+  if (requiredFields.length === 0) {
+    return null;
+  }
+
+  const activeCount = requiredFields.filter(
     (f) => formData[f.id] === true
   ).length;
 
@@ -131,14 +152,14 @@ export const StatusSection: React.FC<StatusSectionProps> = ({
               حالة الاستمارة (إدارة فقط)
             </CardTitle>
             <p className="text-sm text-amber-700 mt-1">
-              حدد حالة كل عنصر من عناصر الاستمارة
+              حدد حالة كل عنصر من عناصر الاستمارة المطلوبة
             </p>
           </div>
         </div>
       </CardHeader>
 
       <CardContent className="space-y-4">
-        {STATUS_FIELDS.map(
+        {requiredFields.map(
           ({
             id,
             label,
@@ -313,7 +334,7 @@ export const StatusSection: React.FC<StatusSectionProps> = ({
                 {activeCount}
               </span>
               <span className="text-sm text-amber-700">
-                من {STATUS_FIELDS.length}
+                من {requiredFields.length}
               </span>
             </div>
           </div>
@@ -323,7 +344,9 @@ export const StatusSection: React.FC<StatusSectionProps> = ({
             <div
               className="bg-gradient-to-r from-amber-500 to-orange-500 h-full rounded-full transition-all duration-500"
               style={{
-                width: `${(activeCount / STATUS_FIELDS.length) * 100}%`,
+                width: requiredFields.length > 0 
+                  ? `${(activeCount / requiredFields.length) * 100}%`
+                  : '0%',
               }}
             />
           </div>
