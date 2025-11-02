@@ -72,14 +72,18 @@ const FormsList = ({
     if (form.accepted) return 'from-purple-400 to-violet-500'
     return 'from-gray-400 to-slate-500'
   }
-
-  const getStatusBadge = (form: Form) => {
-    if (form.approved) return { label: 'موافق عليها', color: 'bg-green-100 text-green-800 border-green-200' }
-    if (form.submitted) return { label: 'مقدمة', color: 'bg-blue-100 text-blue-800 border-blue-200' }
-    if (form.accepted) return { label: 'مقبولة', color: 'bg-purple-100 text-purple-800 border-purple-200' }
-    return { label: 'مسودة', color: 'bg-gray-100 text-gray-800 border-gray-200' }
-  }
-
+const getStatusBadge = (form: Form) => {
+  // الترتيب حسب الأولوية: accepted -> approved -> submitted -> received -> payoff -> touch
+  
+  if (form.accepted) return { label: 'مقبولة', color: 'bg-purple-100 text-purple-800 border-purple-200' }
+  if (form.approved) return { label: 'موافق عليها', color: 'bg-green-100 text-green-800 border-green-200' }
+  if (form.submitted) return { label: 'مقدمة', color: 'bg-blue-100 text-blue-800 border-blue-200' }
+  if (form.received) return { label: 'مستلمة', color: 'bg-yellow-100 text-yellow-800 border-yellow-200' }
+  if (form.payoff) return { label: 'مدفوعة', color: 'bg-teal-100 text-teal-800 border-teal-200' }
+  if (form.touch) return { label: 'تم اللمس', color: 'bg-indigo-100 text-indigo-800 border-indigo-200' }
+  
+  return { label: 'مسودة', color: 'bg-gray-100 text-gray-800 border-gray-200' }
+}
   return (
     <div className="space-y-4">
       <Card className="bg-card backdrop-blur-sm border-border/50 shadow-lg">
@@ -128,7 +132,7 @@ const FormsList = ({
 
                     <div className="col-span-2">
                       <span className="text-sm text-card-foreground">
-                        {form.kind_display}
+                        {form.kind_name}
                       </span>
                     </div>
 
