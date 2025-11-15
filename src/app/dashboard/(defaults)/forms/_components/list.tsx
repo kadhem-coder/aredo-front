@@ -80,7 +80,7 @@ const getStatusBadge = (form: Form) => {
   if (form.submitted) return { label: 'مقدمة', color: 'bg-blue-100 text-blue-800 border-blue-200' }
   if (form.received) return { label: 'مستلمة', color: 'bg-yellow-100 text-yellow-800 border-yellow-200' }
   if (form.payoff) return { label: 'مدفوعة', color: 'bg-teal-100 text-teal-800 border-teal-200' }
-  if (form.touch) return { label: 'تم اللمس', color: 'bg-indigo-100 text-indigo-800 border-indigo-200' }
+  if (form.touch) return { label: 'تم التواصل', color: 'bg-indigo-100 text-indigo-800 border-indigo-200' }
   
   return { label: 'مسودة', color: 'bg-gray-100 text-gray-800 border-gray-200' }
 }
