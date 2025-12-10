@@ -75,6 +75,31 @@ const FormsPage = () => {
     setFilters(newFilters)
   }
 
+  // Check if any filters are active
+  const hasActiveFilters = () => {
+    return !!(
+      filters.search ||
+      filters.submitted !== undefined ||
+      filters.approved !== undefined ||
+      filters.accepted !== undefined ||
+      filters.received !== undefined ||
+      filters.payoff !== undefined ||
+      filters.touch !== undefined ||
+      filters.kind ||
+      filters.kind__name ||
+      filters.university ||
+      filters.university__name ||
+      filters.date_applied ||
+      filters.date_applied__gte ||
+      filters.date_applied__lte ||
+      filters.date_applied__year ||
+      filters.date_applied__month ||
+      filters.fees ||
+      filters.fees__gte ||
+      filters.fees__lte
+    )
+  }
+
   // Extract data from response
   const forms = formsData?.data?.results || []
   const totalPages = formsData?.data?.total_pages || 0
@@ -304,15 +329,11 @@ const FormsPage = () => {
             </div>
             <h3 className="text-lg font-semibold mb-2 text-card-foreground">لا توجد استمارات</h3>
             <p className="text-muted-foreground mb-4">
-              {filters.search || filters.submitted !== undefined || filters.approved !== undefined || 
-               filters.accepted !== undefined || filters.kind__name || filters.university__name__icontains ||
-               filters.date_applied__gte || filters.date_applied__lte
+              {hasActiveFilters()
                 ? "لم يتم العثور على استمارات مطابقة للفلاتر المحددة"
                 : "لم يتم العثور على أي استمارات في النظام"}
             </p>
-            {(filters.search || filters.submitted !== undefined || filters.approved !== undefined || 
-              filters.accepted !== undefined || filters.kind__name || filters.university__name__icontains ||
-              filters.date_applied__gte || filters.date_applied__lte) && (
+            {hasActiveFilters() && (
               <Button 
                 onClick={() => handleFiltersChange({ page: 1, page_size: 12, ordering: "-date_applied" })}
                 variant="outline"

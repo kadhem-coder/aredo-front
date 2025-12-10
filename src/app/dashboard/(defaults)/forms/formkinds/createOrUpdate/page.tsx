@@ -81,7 +81,7 @@ const booleanFields = [
   { key: 'phone', label: 'رقم الهاتف ', icon: Phone },
   { key: 'notes', label: 'الملاحظات', icon: FileText },
   { key: 'department', label: 'التخصص', icon: Building },
-  { key: 'fees', label: 'الرسوم', icon: FileText },
+  { key: 'fees', label: 'الرسوم بالدينار العراقي', icon: FileText },
   { key: 'degreenum', label: 'المعدل', icon: FileText },
   { key: 'passport', label: 'رقم جواز السفر', icon: FileText },
   { key: 'degree', label: 'نوع الدراسة', icon: GraduationCap },
@@ -99,8 +99,8 @@ const booleanFields = [
   { key: 'mushref', label: 'المشرف', icon: User },
   { key: 'publishResearch', label: 'نشر البحث', icon: FileText },
   { key: 'stilal', label: 'استلال', icon: FileText },
-  { key: 'international', label: 'دولي', icon: Building },
-  { key: 'univerFees', label: 'الرسوم', icon: FileText }, // صلاحيات ادمن 
+  { key: 'international', label: 'عالمي', icon: Building },
+  { key: 'univerFees', label: 'رسوم الجامعة بالدينار العراقي', icon: FileText }, // صلاحيات ادمن 
   { key: 'kind_fees', label: 'اجور الشركة', icon: FileText }, // صلاحيات ادمن 
   { key: 'touch', label: 'تم التواصل', icon: Phone },
   { key: 'submitted', label: 'تم التقديم', icon: CheckSquare },
@@ -187,9 +187,9 @@ const CreateOrUpdateFormKind = () => {
 
     if (!formData.icon.trim()) newErrors.icon = 'أيقونة الاستمارة مطلوبة'
 
-    if (formData.description && formData.description.length > 500) {
-      newErrors.description = 'الوصف يجب أن يكون أقل من 500 حرف'
-    }
+    // if (formData.description && formData.description.length > 500) {
+    //   newErrors.description = 'الوصف يجب أن يكون أقل من 500 حرف'
+    // }
 
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
@@ -378,7 +378,7 @@ const CreateOrUpdateFormKind = () => {
                 </div>
 
                 {/* Description */}
-                <div className="space-y-2">
+                {/* <div className="space-y-2">
                   <Label htmlFor="description">الوصف</Label>
                   <Textarea
                     id="description"
@@ -393,7 +393,7 @@ const CreateOrUpdateFormKind = () => {
                     <span>وصف مختصر لنوع الاستمارة</span>
                     <span>{formData.description?.length || 0}/500</span>
                   </div>
-                </div>
+                </div> */}
 
                 {/* Icon Selection */}
                 <div className="space-y-2">
@@ -781,7 +781,7 @@ const CreateOrUpdateFormKind = () => {
                     <li>• اختر اسماً واضحاً ومختصراً لنوع الاستمارة</li>
                     <li>• حدد المدير المسؤول ورقم تواصله</li>
                     <li>• فعّل الحقول المطلوبة فقط لتبسيط النموذج</li>
-                    <li>• استخدم الوصف لتوضيح الغرض من الاستمارة</li>
+                    {/* <li>• استخدم الوصف لتوضيح الغرض من الاستمارة</li> */}
                   </ul>
                 </div>
               </CardContent>

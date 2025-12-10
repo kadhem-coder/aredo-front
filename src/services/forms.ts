@@ -200,19 +200,38 @@ export interface GetFormsRequest {
   page_size?: number;
 
   // ========== Search ==========
-  search?: string; // البحث في full_name, email, phone, department, university name
+  search?: string; // البحث في full_name, email, phone, department, deepdepartment, university name, form kind, degree number, passport
 
   // ========== Ordering ==========
-  ordering?: string; // مثال: "date_applied", "-full_name", "email"
+  ordering?: string; // مثال: "date_applied", "-full_name", "email", "fees", "updated_at"
 
-  // ========== Filtering ==========
+  // ========== Boolean Filters ==========
   submitted?: boolean;
   approved?: boolean;
   accepted?: boolean;
-  kind__name?: string; // فلتر بناءً على اسم نوع الاستمارة
-  university__name__icontains?: string; // فلتر بناءً على اسم الجامعة (partial match)
-  date_applied__gte?: string; // تاريخ من (YYYY-MM-DD)
-  date_applied__lte?: string; // تاريخ إلى (YYYY-MM-DD)
+  received?: boolean;
+  payoff?: boolean;
+  touch?: boolean;
+
+  // ========== Form Kind Filters ==========
+  kind?: string; // UUID - exact match
+  kind__name?: string; // اسم نوع الاستمارة - exact or partial match
+
+  // ========== University Filters ==========
+  university?: string; // UUID - exact match
+  university__name?: string; // اسم الجامعة - exact or partial match
+
+  // ========== Date Filters ==========
+  date_applied?: string; // تاريخ محدد (YYYY-MM-DD)
+  date_applied__gte?: string; // من تاريخ (YYYY-MM-DD)
+  date_applied__lte?: string; // إلى تاريخ (YYYY-MM-DD)
+  date_applied__year?: number; // سنة التقديم (e.g., 2024)
+  date_applied__month?: number; // شهر التقديم (1-12)
+
+  // ========== Fees Filters ==========
+  fees?: string; // رسوم محددة - exact match
+  fees__gte?: string; // رسوم أكبر من أو تساوي
+  fees__lte?: string; // رسوم أقل من أو تساوي
 }
 
 // ==================== RESPONSE TYPES ====================
@@ -259,42 +278,53 @@ export const formsApi = api.injectEndpoints({
     getForms: build.query<FormsListResponse, GetFormsRequest | void>({
       query: (params) => {
         const queryParams = params || {};
+        const apiParams: Record<string, any> = {
+          page: queryParams.page || 1,
+          page_size: queryParams.page_size || 10,
+        };
+
+        // Search
+        if (queryParams.search) apiParams.search = queryParams.search;
+
+        // Ordering
+        if (queryParams.ordering) apiParams.ordering = queryParams.ordering;
+
+        // Boolean Filters
+        if (queryParams.submitted !== undefined) apiParams.submitted = queryParams.submitted;
+        if (queryParams.approved !== undefined) apiParams.approved = queryParams.approved;
+        if (queryParams.accepted !== undefined) apiParams.accepted = queryParams.accepted;
+        if (queryParams.received !== undefined) apiParams.received = queryParams.received;
+        if (queryParams.payoff !== undefined) apiParams.payoff = queryParams.payoff;
+        if (queryParams.touch !== undefined) apiParams.touch = queryParams.touch;
+
+        // Form Kind Filters
+        if (queryParams.kind) apiParams.kind = queryParams.kind;
+        if (queryParams.kind__name) apiParams.kind__name = queryParams.kind__name;
+
+        // University Filters
+        if (queryParams.university) apiParams.university = queryParams.university;
+        if (queryParams.university__name) apiParams.university__name = queryParams.university__name;
+
+        // Date Filters
+        if (queryParams.date_applied) apiParams.date_applied = queryParams.date_applied;
+        if (queryParams.date_applied__gte) apiParams.date_applied__gte = queryParams.date_applied__gte;
+        if (queryParams.date_applied__lte) apiParams.date_applied__lte = queryParams.date_applied__lte;
+        if (queryParams.date_applied__year) apiParams.date_applied__year = queryParams.date_applied__year;
+        if (queryParams.date_applied__month) apiParams.date_applied__month = queryParams.date_applied__month;
+
+        // Fees Filters
+        if (queryParams.fees) apiParams.fees = queryParams.fees;
+        if (queryParams.fees__gte) apiParams.fees__gte = queryParams.fees__gte;
+        if (queryParams.fees__lte) apiParams.fees__lte = queryParams.fees__lte;
+
         return {
           url: "forms/",
           method: "GET",
-          params: {
-            page: queryParams.page || 1,
-            page_size: queryParams.page_size || 10,
-            ...(queryParams.search && { search: queryParams.search }),
-            ...(queryParams.ordering && { ordering: queryParams.ordering }),
-            ...(queryParams.submitted !== undefined && {
-              submitted: queryParams.submitted,
-            }),
-            ...(queryParams.approved !== undefined && {
-              approved: queryParams.approved,
-            }),
-            ...(queryParams.accepted !== undefined && {
-              accepted: queryParams.accepted,
-            }),
-            ...(queryParams.kind__name && {
-              kind__name: queryParams.kind__name,
-            }),
-            ...(queryParams.university__name__icontains && {
-              university__name__icontains:
-                queryParams.university__name__icontains,
-            }),
-            ...(queryParams.date_applied__gte && {
-              date_applied__gte: queryParams.date_applied__gte,
-            }),
-            ...(queryParams.date_applied__lte && {
-              date_applied__lte: queryParams.date_applied__lte,
-            }),
-          },
+          params: apiParams,
         };
       },
       providesTags: ["Forms"],
     }),
-
     /**
      * GET /forms/{id}/
      * الحصول على استمارة محددة بواسطة ID

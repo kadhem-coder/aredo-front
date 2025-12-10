@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useSession, signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { 
   Bell, 
   User, 
@@ -18,12 +19,12 @@ interface HeaderProps {
 
 const AppHeader = ({ onToggleSidebar }: HeaderProps) => {
   const { data: session } = useSession();
+  const router = useRouter();
   const [showNotifications, setShowNotifications] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
 
   const notificationRef = useRef<HTMLDivElement>(null);
   const userMenuRef = useRef<HTMLDivElement>(null);
-
 
   // إغلاق القوائم عند النقر خارجها
   useEffect(() => {
@@ -40,10 +41,36 @@ const AppHeader = ({ onToggleSidebar }: HeaderProps) => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const handleSignOut = () => {
-    signOut({ callbackUrl: '/' });
-  };
 
+  const handleSignOut = async () => {
+  try {
+    // مسح localStorage
+    localStorage.clear();
+    
+    // مسح sessionStorage
+    sessionStorage.clear();
+    
+    // مسح أي cookies إضافية
+    document.cookie.split(";").forEach((c) => {
+      document.cookie = c
+        .replace(/^ +/, "")
+        .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+    });
+
+    // تسجيل الخروج من NextAuth
+    await signOut({ 
+      redirect: false
+    });
+
+    // التحويل للصفحة الرئيسية
+    const websiteUrl = process.env.NEXT_PUBLIC_WEBSITE_URL || 'https://aredo.org/';
+    window.location.href = websiteUrl;
+    
+  } catch (error) {
+    console.error('Error during sign out:', error);
+    window.location.href = process.env.NEXT_PUBLIC_WEBSITE_URL || 'https://aredo.org/';
+  }
+};
   return (
     <header className="bg-white/80 backdrop-blur-md border-b border-gray-200 px-4 py-3 relative z-50 rounded-xl shadow-sm">
       <div className="flex items-center justify-between">
@@ -58,9 +85,9 @@ const AppHeader = ({ onToggleSidebar }: HeaderProps) => {
           </button>
           
           {/* عنوان الصفحة للموبايل */}
-          <div className="md:hidden">
+          {/* <div className="md:hidden">
             <h1 className="text-gray-800 font-semibold text-lg">لوحة التحكم</h1>
-          </div>
+          </div> */}
         </div>
 
         {/* الجانب الأيمن - الإشعارات وقائمة المستخدم */}

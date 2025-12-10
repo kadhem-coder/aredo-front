@@ -26,7 +26,7 @@ interface Category {
 
 interface HeaderWebsiteProps {
   categories: Category[];
-  scrollToSection: (sectionId: string) => void;
+  scrollToSection?: (sectionId: string) => void;
 }
 
 const HeaderWebsite = ({ categories, scrollToSection }: HeaderWebsiteProps) => {
@@ -56,14 +56,18 @@ const HeaderWebsite = ({ categories, scrollToSection }: HeaderWebsiteProps) => {
   };
 
   const handleCategoryClick = (categoryId: string) => {
-    scrollToSection(categoryId);
+    // التوجيه إلى صفحة القسم
+    router.push(`/news/category/${categoryId}`);
     setIsMobileMenuOpen(false);
-    setActiveSection(`#${categoryId}`);
+    setIsMoreMenuOpen(false);
   };
 
   // دوال التحقق من النشاط
   const isActive = (path: string) => activeSection === path;
-  const isCategoryActive = (categoryId: string) => activeSection === `#${categoryId}`;
+  const isCategoryActive = (categoryId: string) => {
+    // التحقق إذا كنا في صفحة القسم
+    return pathname === `/news/category/${categoryId}`;
+  };
 
   // تقسيم التصنيفات إلى الرئيسية والمزيد
   const mainCategories = categories.slice(0, 3);
@@ -209,7 +213,7 @@ const HeaderWebsite = ({ categories, scrollToSection }: HeaderWebsiteProps) => {
 
           {/* الأزرار الجانبية */}
           <div className="flex items-center gap-3">
-            <button
+            {/* <button
               onClick={() => handleNavigation("/dashboard")}
               className={`bg-gradient-to-r text-white px-6 py-3 rounded-xl transition-all flex items-center gap-2 shadow-lg transform hover:scale-105 ${
                 isActive("/dashboard")
@@ -219,7 +223,7 @@ const HeaderWebsite = ({ categories, scrollToSection }: HeaderWebsiteProps) => {
             >
               <Settings className="w-4 h-4" />
               لوحة التحكم
-            </button>
+            </button> */}
 
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -239,10 +243,7 @@ const HeaderWebsite = ({ categories, scrollToSection }: HeaderWebsiteProps) => {
           <div className="lg:hidden bg-white border-t border-gray-200 py-4">
             <div className="space-y-2 max-h-80 overflow-y-auto">
               <button
-                onClick={() => {
-                  scrollToTop();
-                  setIsMobileMenuOpen(false);
-                }}
+                onClick={() => handleNavigation("/")}
                 className={`w-full text-right px-4 py-3 flex items-center gap-3 rounded-lg border-b border-gray-100 transition-colors ${
                   isActive("/") 
                     ? "text-blue-600 bg-blue-50 font-medium border-blue-200" 
@@ -286,33 +287,39 @@ const HeaderWebsite = ({ categories, scrollToSection }: HeaderWebsiteProps) => {
                 )}
               </button>
 
-              {categories.map((category) => (
-                <button
-                  key={category.id}
-                  onClick={() => handleCategoryClick(category.id)}
-                  className={`w-full text-right px-4 py-3 flex items-center gap-3 rounded-lg border-b border-gray-100 last:border-b-0 transition-colors ${
-                    isCategoryActive(category.id)
-                      ? "text-blue-600 bg-blue-50 font-medium border-blue-200"
-                      : "text-gray-700 hover:bg-gray-50"
-                  }`}
-                >
-                  <div
-                    className="w-4 h-4 rounded-full"
-                    style={{ backgroundColor: category.color }}
-                  />
-                  {category.name}
-                  <span className={`text-xs px-2 py-1 rounded-full ${
-                    isCategoryActive(category.id)
-                      ? "text-blue-600 bg-blue-100"
-                      : "text-gray-500 bg-gray-100"
-                  }`}>
-                    {category.news_count}
-                  </span>
-                  {isCategoryActive(category.id) && (
-                    <div className="w-2 h-2 bg-blue-600 rounded-full ml-auto"></div>
-                  )}
-                </button>
-              ))}
+              {/* تصنيفات الأخبار في القائمة المحمولة */}
+              <div className="border-t border-gray-200 mt-2 pt-2">
+                <div className="px-4 py-2 text-xs text-gray-500 font-semibold">
+                  أقسام الأخبار
+                </div>
+                {categories.map((category) => (
+                  <button
+                    key={category.id}
+                    onClick={() => handleCategoryClick(category.id)}
+                    className={`w-full text-right px-4 py-3 flex items-center gap-3 rounded-lg border-b border-gray-100 last:border-b-0 transition-colors ${
+                      isCategoryActive(category.id)
+                        ? "text-blue-600 bg-blue-50 font-medium border-blue-200"
+                        : "text-gray-700 hover:bg-gray-50"
+                    }`}
+                  >
+                    <div
+                      className="w-4 h-4 rounded-full"
+                      style={{ backgroundColor: category.color }}
+                    />
+                    {category.name}
+                    <span className={`text-xs px-2 py-1 rounded-full ${
+                      isCategoryActive(category.id)
+                        ? "text-blue-600 bg-blue-100"
+                        : "text-gray-500 bg-gray-100"
+                    }`}>
+                      {category.news_count}
+                    </span>
+                    {isCategoryActive(category.id) && (
+                      <div className="w-2 h-2 bg-blue-600 rounded-full ml-auto"></div>
+                    )}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         )}
